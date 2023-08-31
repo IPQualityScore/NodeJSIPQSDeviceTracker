@@ -1,4 +1,4 @@
-# NPM Device Fingerprint Tracker Package for React
+# IPQualityScore NPM Device Fingerprint Tracker Package for React
 
 IPQS combines our advanced industry blacklist fraud data and global threat network with device fingerprinting technologies to offer one of the most advanced anti-fraud tools on the market. The IPQS device fingerprint tracker tracks devices using advanced algorithms while offering websites the ability to safeguard themselves against bot attacks, duplicate account creation, chargeback fraud, and much more.
 
@@ -26,7 +26,7 @@ npm i node_js_ipqs_device_tracker
 
 ## Initialization
 
-First, import the IPQS device fingerprint tracker into your project:
+First, import the IPQualityScore device fingerprint tracker into your project:
 
 ```javascript
 import DeviceFingerprint from "node_js_ipqs_device_tracker";
