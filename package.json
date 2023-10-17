@@ -1,6 +1,6 @@
 {
   "name": "node_js_ipqs_device_tracker",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "NodeJS/React package to interface with the IPQS Device Fingerprint API.",
   "types": "./lib/cjs/types/index.d.ts",
   "main": "./lib/cjs/index.js",

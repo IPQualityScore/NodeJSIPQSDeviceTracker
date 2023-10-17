@@ -279,6 +279,33 @@ DeviceFingerprint.initializeScriptAsync(secretKey).then(() => {
 });
 ```
 
+# Define the Tracker Domain
+
+IPQS device trackers can be tied to specific domains. This option is selected while creating the device tracker. Adding the defined domain to the device tracker only requires one additional step - pass the domain name as a second variable with the secret key.
+
+```javascript
+    const secretKey = process.env.VUE_APP_IPQS_DT_KEY;
+    const domain = "example.com";
+    DeviceFingerprint.initializeScriptAsync(secretKey, domain)
+      .then(async () => {
+        DeviceFingerprint.AfterResult((result) => {
+          console.log("IPQS Fingerprint: ", result);
+          // ########################################
+          // Handle The Fingerprint Record
+          // ########################################
+          // Best practice is to save the fingerprint results to the Store. The
+          // example below saves the fingerprint results to a Vuex initialized store.
+
+          // this.$store.commit.save_fingerprint(result);
+          // return result;
+        });
+        DeviceFingerprint.Init();
+      });
+
+</script>
+```
+
+
 # Need Help?
 
 If you need additional help or would like to schedule a meeting for assistance, open a new help ticket in your [IPQS account](https://www.ipqualityscore.com/user/support/new).
