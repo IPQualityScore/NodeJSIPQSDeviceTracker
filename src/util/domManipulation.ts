@@ -3,24 +3,24 @@ import {
   DEVICE_FINGERPRINT_SCRIPT_ID_ASYNC,
 } from "./const";
 
-export const addDeviceTrackingTags = (secretKey: string, domain: string) => {
-  if (domain === undefined) domain = "*";
+export const addDeviceTrackingTags = (secretKey: string, tracker: string) => {
+  if (tracker === undefined) tracker = "*";
   document.head.appendChild(getScriptTagWindowIPQInit());
-  document.head.appendChild(getScriptTagLoadSrc(secretKey, domain));
-  document.head.appendChild(getNoscriptTag(secretKey, domain));
+  document.head.appendChild(getScriptTagLoadSrc(secretKey, tracker));
+  document.head.appendChild(getNoscriptTag(secretKey, tracker));
 };
 
 export const addDeviceTrackingTagsAsync = (
   secretKey: string,
-  domain: string
+  tracker: string
 ) => {
   return new Promise<void>((resolve, reject) => {
-    if (domain === undefined) domain = "*";
+    if (tracker === undefined) tracker = "*";
     document.head.appendChild(getScriptTagWindowIPQInit());
     document.head.appendChild(
-      getScriptTagLoadSrcAsync(secretKey, domain, resolve, reject)
+      getScriptTagLoadSrcAsync(secretKey, tracker, resolve, reject)
     );
-    document.head.appendChild(getNoscriptTag(secretKey, domain));
+    document.head.appendChild(getNoscriptTag(secretKey, tracker));
   });
 };
 
@@ -36,8 +36,8 @@ const getScriptTagWindowIPQInit = () => {
   return scriptTag;
 };
 
-const getScriptTagLoadSrc = (secretKey: string, domain: string) => {
-  const srcFile = `https://www.ipqualityscore.com/api/${domain}/${secretKey}/learn.js`;
+const getScriptTagLoadSrc = (secretKey: string, tracker: string) => {
+  const srcFile = `https://www.ipqualityscore.com/api/${tracker}/${secretKey}/learn.js`;
   const scriptTag: Element = document.createElement("script");
   scriptTag.setAttribute("src", srcFile);
   scriptTag.setAttribute("id", DEVICE_FINGERPRINT_SCRIPT_ID);
@@ -47,11 +47,11 @@ const getScriptTagLoadSrc = (secretKey: string, domain: string) => {
 
 const getScriptTagLoadSrcAsync = (
   secretKey: string,
-  domain: string,
+  tracker: string,
   resolveCb: () => void,
   rejectCb: () => void
 ) => {
-  const srcFile = `https://www.ipqualityscore.com/api/${domain}/${secretKey}/learn.js`;
+  const srcFile = `https://www.ipqualityscore.com/api/${tracker}/${secretKey}/learn.js`;
   const scriptTag: HTMLScriptElement = document.createElement("script");
   scriptTag.setAttribute("src", srcFile);
   scriptTag.setAttribute("id", DEVICE_FINGERPRINT_SCRIPT_ID_ASYNC);
