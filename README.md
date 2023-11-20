@@ -279,7 +279,7 @@ DeviceFingerprint.initializeScriptAsync(secretKey).then(() => {
 });
 ```
 
-# Define the Tracker Domain
+# Define the Device Tracker
 
 IPQS device trackers can be tied to specific domains. This option is selected while creating the device tracker. Adding the defined domain to the device tracker only requires one additional step - pass the domain name ( or device tracker name ) as a second variable with the secret key.
 
