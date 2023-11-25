@@ -5,11 +5,9 @@ import {
 
 export const addDeviceTrackingTags = (
   secretKey: string,
-  tracker: string,
-  domain: string
+  tracker = "*",
+  domain = "www.ipqualityscore.com",
 ) => {
-  if (tracker === undefined) tracker = "*";
-  if (domain === undefined) tracker = "www.ipqualityscore.com";
   document.head.appendChild(getScriptTagWindowIPQInit());
   document.head.appendChild(getScriptTagLoadSrc(secretKey, tracker, domain));
   document.head.appendChild(getNoscriptTag(secretKey, tracker));
@@ -17,12 +15,10 @@ export const addDeviceTrackingTags = (
 
 export const addDeviceTrackingTagsAsync = (
   secretKey: string,
-  tracker: string,
-  domain: string
+  tracker = "*",
+  domain = "www.ipqualityscore.com",
 ) => {
   return new Promise<void>((resolve, reject) => {
-    if (tracker === undefined) tracker = "*";
-    if (domain === undefined) tracker = "www.ipqualityscore.com";
     document.head.appendChild(getScriptTagWindowIPQInit());
     document.head.appendChild(
       getScriptTagLoadSrcAsync(secretKey, tracker, domain, resolve, reject)
