@@ -9,14 +9,14 @@ import {
     Pause,
     Resume,
 } from "./util/deviceFingerprintFunctions";
-import {addDeviceTrackingTags, addDeviceTrackingTagsAsync} from "./util/domManipulation";
+import { addDeviceTrackingTags, addDeviceTrackingTagsAsync } from "./util/domManipulation";
 
-const initializeScript = (secretKey: string, domain: string) => {
-    addDeviceTrackingTags(secretKey, domain);
+const initializeScript = (secretKey: string, tracker: string, domain: string) => {
+    addDeviceTrackingTags(secretKey, tracker, domain);
 }
 
-const initializeScriptAsync = (secretKey: string, domain: string) => {
-    return addDeviceTrackingTagsAsync(secretKey, domain);
+const initializeScriptAsync = (secretKey: string, tracker: string, domain: string) => {
+    return addDeviceTrackingTagsAsync(secretKey, tracker, domain);
 }
 export default {
     initializeScript,

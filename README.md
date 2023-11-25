@@ -279,14 +279,14 @@ DeviceFingerprint.initializeScriptAsync(secretKey).then(() => {
 });
 ```
 
-# Define the Tracker Domain
+# Define the Device Tracker
 
-IPQS device trackers can be tied to specific domains. This option is selected while creating the device tracker. Adding the defined domain to the device tracker only requires one additional step - pass the domain name as a second variable with the secret key.
+IPQS device trackers can be tied to specific domains. This option is selected while creating the device tracker. Adding the defined domain to the device tracker only requires one additional step - pass the domain name ( or device tracker name ) as a second variable with the secret key.
 
 ```javascript
     const secretKey = process.env.VUE_APP_IPQS_DT_KEY;
-    const domain = "example.com";
-    DeviceFingerprint.initializeScriptAsync(secretKey, domain)
+    const tracker = "example.com";
+    DeviceFingerprint.initializeScriptAsync(secretKey, tracker)
       .then(async () => {
         DeviceFingerprint.AfterResult((result) => {
           console.log("IPQS Fingerprint: ", result);
@@ -305,6 +305,38 @@ IPQS device trackers can be tied to specific domains. This option is selected wh
 </script>
 ```
 
+# Define the Custom Domain
+
+IPQS device trackers can be served through custom domains. Defining a custom domain for the device tracker host is similiar to the steps above. Simply pass the custom domain as a third option to the DeviceFingerprint.initializeScriptAsync() call.
+
+Do not include 'https://' in the custom domain. Only add the subdomain (if needed), the domain, and TLD in the custom_domain string value.
+
+Eg. example-host-domain.com
+
+If passing a custom domain to the DeviceFingerprint.initializeScriptAsync() function, you MUST also include the tracker domain/name, too. If the device tracker is configured with a wildcard (\*), pass the wildcard as the tracker name.
+
+```javascript
+    const secretKey = process.env.VUE_APP_IPQS_DT_KEY;
+    const tracker = "example.com";
+    const custom_domain = "example-host-domain.com"
+    DeviceFingerprint.initializeScriptAsync(secretKey, tracker, custom_domain)
+      .then(async () => {
+        DeviceFingerprint.AfterResult((result) => {
+          console.log("IPQS Fingerprint: ", result);
+          // ########################################
+          // Handle The Fingerprint Record
+          // ########################################
+          // Best practice is to save the fingerprint results to the Store. The
+          // example below saves the fingerprint results to a Vuex initialized store.
+
+          // this.$store.commit.save_fingerprint(result);
+          // return result;
+        });
+        DeviceFingerprint.Init();
+      });
+
+</script>
+```
 
 # Need Help?
 
