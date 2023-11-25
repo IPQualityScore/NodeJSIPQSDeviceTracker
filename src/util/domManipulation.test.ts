@@ -86,7 +86,7 @@ describe('domManipulation util', () => {
             // @ts-ignore
             const fn = module.__get__('getScriptTagLoadSrcAsync');
             const callback = jest.fn(() => true);
-            const scriptTag: Element = fn(secretKey, callback);
+            const scriptTag: Element = fn(secretKey, "", "", callback);
             const scriptTagHtml: string = scriptTag.outerHTML;
             fireEvent.load(scriptTag);
             expect(callback).toHaveBeenCalled();  // Success!
@@ -102,7 +102,7 @@ describe('domManipulation util', () => {
             // @ts-ignore
             const fn = module.__get__('getScriptTagLoadSrcAsync');
             const callback = jest.fn(() => true);
-            const scriptTag: Element = fn(secretKey, null, callback);
+            const scriptTag: Element = fn(secretKey, "", "", null, callback);
             const scriptTagHtml: string = scriptTag.outerHTML;
             fireEvent.error(scriptTag);
             expect(callback).toHaveBeenCalled();  // Success!
