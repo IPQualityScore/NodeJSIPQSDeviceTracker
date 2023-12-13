@@ -10,7 +10,7 @@ export const addDeviceTrackingTags = (
 ) => {
   document.head.appendChild(getScriptTagWindowIPQInit());
   document.head.appendChild(getScriptTagLoadSrc(secretKey, tracker, domain));
-  document.head.appendChild(getNoscriptTag(secretKey, tracker));
+  document.head.appendChild(getNoscriptTag(secretKey, tracker, domain));
 };
 
 export const addDeviceTrackingTagsAsync = (
@@ -23,7 +23,7 @@ export const addDeviceTrackingTagsAsync = (
     document.head.appendChild(
       getScriptTagLoadSrcAsync(secretKey, tracker, domain, resolve, reject)
     );
-    document.head.appendChild(getNoscriptTag(secretKey, tracker));
+    document.head.appendChild(getNoscriptTag(secretKey, tracker, domain));
   });
 };
 
@@ -74,15 +74,15 @@ const getScriptTagLoadSrcAsync = (
   return scriptTag;
 };
 
-const getNoscriptTag = (secretKey: string, domain: string) => {
+const getNoscriptTag = (secretKey: string, tracker: string, domain: string) => {
   const noscriptTag: Element = document.createElement("noscript");
-  noscriptTag.appendChild(generateImageTag(secretKey, domain));
+  noscriptTag.appendChild(generateImageTag(secretKey, tracker, domain));
   return noscriptTag;
 };
 
-const generateImageTag = (secretKey: string, domain: string) => {
+const generateImageTag = (secretKey: string, tracker: string, domain: string) => {
   const imageTag: Element = document.createElement("img");
-  const srcImage = `https://www.ipqscdn.com/api/${domain}/${secretKey}/pixel.png`;
+  const srcImage = `https://${domain}/api/${tracker}/${secretKey}/pixel.png`;
   imageTag.setAttribute("src", srcImage);
   return imageTag;
 };
