@@ -35,14 +35,11 @@ import DeviceFingerprint from "node_js_ipqs_device_tracker";
 Next, initialize the device fingerprint tracker in the webapp:
 
 ```javascript
-const secretKey = process.env.VUE_APP_IPQS_DT_KEY;
+const secretKey = "YourSecretKey";
 DeviceFingerprint.initializeScriptAsync(secretKey)
   .then(async () => {
     DeviceFingerprint.AfterResult((result) => {
-      save_fingerprint(result);
-      LOGS.log_to_console("Fingerprint", result);
-      // FINGERPRINT.save_fingerprint(result);
-      // return result;
+      console.log(result);
     });
     DeviceFingerprint.Init();
   })
@@ -98,7 +95,9 @@ function App() {
   useEffect(() => {
     DeviceFingerprint.initializeScript();
     setTimeout(function () {
-      DeviceFingerprint.AfterResult(afterResult);
+      DeviceFingerprint.AfterResult((result) => {
+        console.log(result);
+      });
       DeviceFingerprint.Init();
     }, 1000);
   });
@@ -116,19 +115,11 @@ export default {
     NavBar,
   },
   setup() {
-    const secretKey = process.env.VUE_APP_IPQS_DT_KEY;
+    const secretKey = 'YourSecretKey';
     DeviceFingerprint.initializeScriptAsync(secretKey)
       .then(async () => {
         DeviceFingerprint.AfterResult((result) => {
-          console.log("IPQS Fingerprint: ", result);
-          // ########################################
-          // Handle The Fingerprint Record
-          // ########################################
-          // Best practice is to save the fingerprint results to the Store. The
-          // example below saves the fingerprint results to a Vuex initialized store.
-
-          // this.$store.commit.save_fingerprint(result);
-          // return result;
+          console.log(result);
         });
         DeviceFingerprint.Init();
       })
@@ -148,7 +139,7 @@ export default {
 
 ## Other Methods
 
-**NOTE**: The following methods will only work after `initializeScriptAsync()` or `initializeScriptAsync()` have successfully loaded in React.
+**NOTE**: The following methods will only work after `initializeScript()` or `initializeScriptAsync()` have successfully loaded in React.
 
 ### Init();
 
@@ -279,25 +270,24 @@ DeviceFingerprint.initializeScriptAsync(secretKey).then(() => {
 });
 ```
 
-# Define the Device Tracker
+# Defining a Custom Domain & Tracker
 
-IPQS device trackers can be tied to specific domains. This option is selected while creating the device tracker. Adding the defined domain to the device tracker only requires one additional step - pass the domain name ( or device tracker name ) as a second variable with the secret key.
+The sync and async functions mentioned above use the default www.ipqscdn.com domain and a wildcard tracker. For security purposes, it may be a good practice to define the custom domain hosting the IPQS tracker script and the tracker name. Using the custom options will require the secret key, custom domain, and tracker name passed to the sync or async calls.
+
+The IPQS custom domain must be registered to an IPQualityScore account before the custom domain can be used to host the device tracking scripts. If your account does not have a custom domain registered with it, pass the 'www.ipqscdn.com' domain instead.
+
+Do not include 'https://' in the custom domain value. Only add the subdomain (if needed), the domain, and TLD in the custom_domain string value.
+
+## Using Async Options
 
 ```javascript
-    const secretKey = process.env.VUE_APP_IPQS_DT_KEY;
+    const secretKey = 'YourSecretKey';
     const tracker = "example.com";
-    DeviceFingerprint.initializeScriptAsync(secretKey, tracker)
+    const custom_domain = "example-host-domain.com"
+    DeviceFingerprint.initializeScriptAsyncCustom(secretKey,custom_domain, tracker )
       .then(async () => {
         DeviceFingerprint.AfterResult((result) => {
-          console.log("IPQS Fingerprint: ", result);
-          // ########################################
-          // Handle The Fingerprint Record
-          // ########################################
-          // Best practice is to save the fingerprint results to the Store. The
-          // example below saves the fingerprint results to a Vuex initialized store.
-
-          // this.$store.commit.save_fingerprint(result);
-          // return result;
+          console.log(result);
         });
         DeviceFingerprint.Init();
       });
@@ -305,41 +295,24 @@ IPQS device trackers can be tied to specific domains. This option is selected wh
 </script>
 ```
 
-# Define the Custom Domain
-
-IPQS device trackers can be served through custom domains. Defining a custom domain for the device tracker host is similiar to the steps above. Simply pass the custom domain as a third option to the DeviceFingerprint.initializeScriptAsync() call.
-
-Do not include 'https://' in the custom domain. Only add the subdomain (if needed), the domain, and TLD in the custom_domain string value.
-
-Eg. example-host-domain.com
-
-If passing a custom domain to the DeviceFingerprint.initializeScriptAsync() function, you MUST also include the tracker domain/name, too. If the device tracker is configured with a wildcard (\*), pass the wildcard as the tracker name.
+## Or Using Sync Options
 
 ```javascript
-    const secretKey = process.env.VUE_APP_IPQS_DT_KEY;
-    const tracker = "example.com";
-    const custom_domain = "example-host-domain.com"
-    DeviceFingerprint.initializeScriptAsync(secretKey, tracker, custom_domain)
-      .then(async () => {
-        DeviceFingerprint.AfterResult((result) => {
-          console.log("IPQS Fingerprint: ", result);
-          // ########################################
-          // Handle The Fingerprint Record
-          // ########################################
-          // Best practice is to save the fingerprint results to the Store. The
-          // example below saves the fingerprint results to a Vuex initialized store.
+import DeviceFingerprint from "ipqs-device-fingerprint-for-react";
 
-          // this.$store.commit.save_fingerprint(result);
-          // return result;
-        });
-        DeviceFingerprint.Init();
-      });
+const secretKey = "YourSecretKey";
+const tracker = "example.com";
+const custom_domain = "example-host-domain.com";
 
-</script>
+DeviceFingerprint.initializeScript(secretKey, custom_domain, tracker);
+setTimeout(function () {
+  DeviceFingerprint.AfterResult((result) => {
+    console.log(result);
+  });
+  DeviceFingerprint.Init();
+}, 1000);
 ```
 
 # Need Help?
 
-If you need additional help or would like to schedule a meeting for assistance, open a new help ticket in your [IPQS account](https://www.ipqualityscore.com/user/support/new).
-
-IPQS offers a full white-glove support service for all customers with an enterprise-level subscription. We are always happy to help!
+If you need additional help or would like to schedule a meeting for assistance, open a help ticket in your [IPQS account](https://www.ipqualityscore.com/user/support/new).
