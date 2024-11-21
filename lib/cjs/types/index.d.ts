@@ -12,6 +12,9 @@ declare const _default: {
     Field: (fieldName: string, element: string) => void;
     Pause: () => void;
     Resume: () => void;
+    SetRequestTimeout: (timeout: number) => void;
+    SetDebugLevel: (debug: number) => void;
+    FetchExecutionLogs: () => object;
 };
 export default _default;
 //# sourceMappingURL=index.d.ts.map

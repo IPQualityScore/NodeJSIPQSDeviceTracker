@@ -36,3 +36,15 @@ export const Pause = () => {
 export const Resume = () => {
     window.Startup.Resume();
 }
+
+export const SetRequestTimeout = (timeout: number) => {
+    window.Startup.SetRequestTimeout(timeout);
+}
+
+export const SetDebugLevel = (debug: number) => {
+    window.Startup.SetDebugLevel(debug);
+}
+
+export const FetchExecutionLogs = () => {
+    return window.Startup.FetchExecutionLogs();
+}

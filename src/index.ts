@@ -8,6 +8,9 @@ import {
   Field,
   Pause,
   Resume,
+  SetRequestTimeout,
+  SetDebugLevel,
+  FetchExecutionLogs,
 } from "./util/deviceFingerprintFunctions";
 
 import {
@@ -59,4 +62,7 @@ export default {
   Field,
   Pause,
   Resume,
+  SetRequestTimeout,
+  SetDebugLevel,
+  FetchExecutionLogs,
 };

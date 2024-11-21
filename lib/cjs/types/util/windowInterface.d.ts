@@ -9,6 +9,9 @@ export interface CustomWindow extends Window {
         Field: (fieldName: string, element: string) => void;
         Pause: () => void;
         Resume: () => void;
+        SetDebugLevel: (debug: number) => void;
+        SetRequestTimeout: (timeout: number) => void;
+        FetchExecutionLogs: () => object;
     };
 }
 //# sourceMappingURL=windowInterface.d.ts.map
