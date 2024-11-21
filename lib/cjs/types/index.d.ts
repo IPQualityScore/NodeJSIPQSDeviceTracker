@@ -12,6 +12,7 @@ declare const _default: {
     Field: (fieldName: string, element: string, debug?: boolean | undefined) => void;
     Pause: (debug?: boolean | undefined) => void;
     Resume: (debug?: boolean | undefined) => void;
+    FetchExecutionLogs: (debug?: boolean | undefined) => void;
 };
 export default _default;
 //# sourceMappingURL=index.d.ts.map

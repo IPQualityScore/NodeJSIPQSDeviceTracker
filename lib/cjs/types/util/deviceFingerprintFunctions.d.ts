@@ -7,4 +7,5 @@ export declare const Store: (name: string, id: number, debug?: boolean) => void;
 export declare const Field: (fieldName: string, element: string, debug?: boolean) => void;
 export declare const Pause: (debug?: boolean) => void;
 export declare const Resume: (debug?: boolean) => void;
+export declare const FetchExecutionLogs: (debug?: boolean) => void;
 //# sourceMappingURL=deviceFingerprintFunctions.d.ts.map
