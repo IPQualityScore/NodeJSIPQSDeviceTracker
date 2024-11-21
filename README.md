@@ -313,6 +313,38 @@ setTimeout(function () {
 }, 1000);
 ```
 
+# Debugging
+
+Debugging is optional. Debugging is built into the library. Pass a 'true' boolean valaue as the last paramter in any function call to enable console logging for that function. The debugging parameter is optional, and no values need to be passed if debugging does not need to be enabled.
+
+Examples:
+
+```javascript
+// initializeScript
+DeviceFingerprint.initializeScript(secretKey, custom_domain, tracker, true);
+
+// initializeScriptAsyncCustom
+DeviceFingerprint.initializeScriptAsyncCustom(
+  secretKey,
+  custom_domain,
+  tracker,
+  true
+);
+
+// initializeScriptAsync
+DeviceFingerprint.initializeScriptAsync(secretKey, true);
+
+// AfterResult
+DeviceFingerprint.AfterResult((result) => {
+  console.log(result);
+}, true);
+
+// Init
+DeviceFingerprint.Init(true);
+```
+
+**Warning**: Notice that the 'true' value is placed after the callback function as a second parameter in the 'AfterResult' function call above. The 'true' boolean value will always be the last parameter passed. If the function call includes a callback function, such as the 'AfterResult' function, the boolean value must be placed after the callback function.
+
 # Need Help?
 
 If you need additional help or would like to schedule a meeting for assistance, open a help ticket in your [IPQS account](https://www.ipqualityscore.com/user/support/new).

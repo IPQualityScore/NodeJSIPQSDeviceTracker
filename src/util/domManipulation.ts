@@ -5,11 +5,25 @@ import {
 
 // Sync methods
 
-export const addDeviceTrackingTags = (secretKey: string) => {
-  const baseURL = `https://www.ipqscdn.com/api/*/${secretKey}`;
-  document.head.appendChild(getScriptTagWindowIPQInit());
-  document.head.appendChild(getScriptTagLoadSrc(baseURL));
-  document.head.appendChild(getNoscriptTag(baseURL));
+export const addDeviceTrackingTags = (secretKey: string, debug?: boolean) => {
+  try {
+    const baseURL = `https://www.ipqscdn.com/api/*/${secretKey}`;
+    if (debug) {
+      console.log("### CALLING: addDeviceTrackingTags ###");
+      console.log("secretKey: ", secretKey);
+      console.log("baseURL: ", baseURL);
+    }
+    document.head.appendChild(getScriptTagWindowIPQInit(debug));
+    document.head.appendChild(getScriptTagLoadSrc(baseURL, debug));
+    document.head.appendChild(getNoscriptTag(baseURL, debug));
+  } catch (error) {
+    if (debug) {
+      console.log(error);
+      console.log(
+        "ERROR: Error appending learn.js script to document (domManipulation.ts - addDeviceTrackingTags)"
+      );
+    }
+  }
 };
 
 // Sync methods with custom configs
@@ -17,36 +31,93 @@ export const addDeviceTrackingTags = (secretKey: string) => {
 export const addDeviceTrackingTagsCustom = (
   secretKey: string,
   customDomain: string,
-  trackerName: string
+  trackerName: string,
+  debug?: boolean
 ) => {
-  const baseURL = `https://${customDomain}/api/${trackerName}/${secretKey}`;
-  document.head.appendChild(getScriptTagWindowIPQInit());
-  document.head.appendChild(getScriptTagLoadSrc(baseURL));
-  document.head.appendChild(getNoscriptTag(baseURL));
+  try {
+    const baseURL = `https://${customDomain}/api/${trackerName}/${secretKey}`;
+    if (debug) {
+      console.log("### CALLING: addDeviceTrackingTagsCustom ###");
+      console.log("secretKey: ", secretKey);
+      console.log("customDomain: ", customDomain);
+      console.log("trackerName: ", trackerName);
+      console.log("baseURL: ", baseURL);
+    }
+    document.head.appendChild(getScriptTagWindowIPQInit(debug));
+    document.head.appendChild(getScriptTagLoadSrc(baseURL, debug));
+    document.head.appendChild(getNoscriptTag(baseURL, debug));
+  } catch (error) {
+    if (debug) {
+      console.log(error);
+      console.log(
+        "ERROR: Error appending learn.js script to document (domManipulation.ts - addDeviceTrackingTagsCustom)"
+      );
+    }
+  }
 };
 
 // Common sync methods
 
-const getScriptTagLoadSrc = (baseURL: string) => {
-  const srcFile = `${baseURL}/learn.js`;
+const getScriptTagLoadSrc = (baseURL: string, debug?: boolean) => {
+  if (debug) {
+    console.log("### CALLING: getScriptTagLoadSrc ###");
+    console.log("baseURL: ", baseURL);
+  }
   const scriptTag: Element = document.createElement("script");
-  scriptTag.setAttribute("src", srcFile);
-  scriptTag.setAttribute("id", DEVICE_FINGERPRINT_SCRIPT_ID);
-  scriptTag.setAttribute("crossorigin", "anonymous");
-  return scriptTag;
+  try {
+    const srcFile = `${baseURL}/learn.js`;
+    if (debug) {
+      console.log("srcFile: ", srcFile);
+    }
+    scriptTag.setAttribute("src", srcFile);
+    scriptTag.setAttribute("id", DEVICE_FINGERPRINT_SCRIPT_ID);
+    scriptTag.setAttribute("crossorigin", "anonymous");
+    if (debug) {
+      console.log("scriptTag: ", scriptTag);
+    }
+    return scriptTag;
+  } catch (error) {
+    if (debug) {
+      console.log(error);
+      console.log(
+        "ERROR: Error appending learn.js script to document (domManipulation.ts - getScriptTagLoadSrc)"
+      );
+    }
+
+    return scriptTag;
+  }
 };
 
 // Async methods
 
-export const addDeviceTrackingTagsAsync = (secretKey: string) => {
-  return new Promise<void>((resolve, reject) => {
-    const baseURL = `https://www.ipqscdn.com/api/*/${secretKey}`;
-    document.head.appendChild(getScriptTagWindowIPQInit());
-    document.head.appendChild(
-      getScriptTagLoadSrcAsync(baseURL, resolve, reject)
-    );
-    document.head.appendChild(getNoscriptTag(baseURL));
-  });
+export const addDeviceTrackingTagsAsync = (
+  secretKey: string,
+  debug?: boolean
+) => {
+  if (debug) {
+    console.log("### CALLING: addDeviceTrackingTagsAsync ###");
+    console.log("baseURL: ", secretKey);
+  }
+  try {
+    return new Promise<void>((resolve, reject) => {
+      const baseURL = `https://www.ipqscdn.com/api/*/${secretKey}`;
+      if (debug) {
+        console.log("baseURL: ", baseURL);
+      }
+      document.head.appendChild(getScriptTagWindowIPQInit(debug));
+      document.head.appendChild(
+        getScriptTagLoadSrcAsync(baseURL, resolve, reject, debug)
+      );
+      document.head.appendChild(getNoscriptTag(baseURL, debug));
+    });
+  } catch (error) {
+    if (debug) {
+      console.log(error);
+      console.log(
+        "ERROR: Error appending learn.js script to document (domManipulation.ts - addDeviceTrackingTagsAsync)"
+      );
+    }
+  }
 };
 
 // Async methods with custom domain, tracker
@@ -54,16 +125,35 @@ export const addDeviceTrackingTagsAsync = (secretKey: string) => {
 export const addDeviceTrackingTagsAsyncCustom = (
   secretKey: string,
   customDomain: string,
-  trackerName: string
+  trackerName: string,
+  debug?: boolean
 ) => {
-  return new Promise<void>((resolve, reject) => {
-    const baseURL = `https://${customDomain}/api/${trackerName}/${secretKey}`;
-    document.head.appendChild(getScriptTagWindowIPQInit());
-    document.head.appendChild(
-      getScriptTagLoadSrcAsync(baseURL, resolve, reject)
-    );
-    document.head.appendChild(getNoscriptTag(baseURL));
-  });
+  if (debug) {
+    console.log("### CALLING: addDeviceTrackingTagsAsyncCustom ###");
+    console.log("secretKey: ", secretKey);
+    console.log("customDomain: ", customDomain);
+    console.log("trackerName: ", trackerName);
+  }
+  try {
+    return new Promise<void>((resolve, reject) => {
+      const baseURL = `https://${customDomain}/api/${trackerName}/${secretKey}`;
+      if (debug) {
+        console.log("baseURL: ", baseURL);
+      }
+      document.head.appendChild(getScriptTagWindowIPQInit(debug));
+      document.head.appendChild(
+        getScriptTagLoadSrcAsync(baseURL, resolve, reject, debug)
+      );
+      document.head.appendChild(getNoscriptTag(baseURL, debug));
+    });
+  } catch (error) {
+    if (debug) {
+      console.log(error);
+      console.log(
+        "ERROR: Error appending learn.js script to document (domManipulation.ts - addDeviceTrackingTagsAsyncCustom)"
+      );
+    }
+  }
 };
 
 // Common async methods
@@ -71,50 +161,125 @@ export const addDeviceTrackingTagsAsyncCustom = (
 const getScriptTagLoadSrcAsync = (
   baseURL: string,
   resolveCb: () => void,
-  rejectCb: () => void
+  rejectCb: () => void,
+  debug?: boolean
 ) => {
-  const srcFile = `${baseURL}/learn.js`;
+  if (debug) {
+    console.log("### CALLING: getScriptTagLoadSrcAsync ###");
+    console.log("baseURL: ", baseURL);
+  }
   const scriptTag: HTMLScriptElement = document.createElement("script");
-  scriptTag.setAttribute("src", srcFile);
-  scriptTag.setAttribute("id", DEVICE_FINGERPRINT_SCRIPT_ID_ASYNC);
-  scriptTag.setAttribute("crossorigin", "anonymous");
-  // For async
-  scriptTag.onload = function () {
-    resolveCb();
-  };
-  scriptTag.onerror = function () {
-    rejectCb();
-  };
-  return scriptTag;
+  try {
+    const srcFile = `${baseURL}/learn.js`;
+    if (debug) {
+      console.log("srcFile: ", srcFile);
+    }
+    scriptTag.setAttribute("src", srcFile);
+    scriptTag.setAttribute("id", DEVICE_FINGERPRINT_SCRIPT_ID_ASYNC);
+    scriptTag.setAttribute("crossorigin", "anonymous");
+    // For async
+    scriptTag.onload = function () {
+      resolveCb();
+    };
+    scriptTag.onerror = function (event) {
+      if (debug) console.log("event: ", event);
+      rejectCb();
+    };
+    if (debug) {
+      console.log("scriptTag: ", scriptTag);
+    }
+    return scriptTag;
+  } catch (error) {
+    if (debug) {
+      console.log(error);
+      console.log(
+        "ERROR: Error appending learn.js script to document (domManipulation.ts - getScriptTagLoadSrcAsync)"
+      );
+    }
+    return scriptTag;
+  }
 };
 
 // Pixel fallback
 
-const getNoscriptTag = (baseURL: string) => {
+const getNoscriptTag = (baseURL: string, debug?: boolean) => {
+  if (debug) {
+    console.log("### CALLING: getNoscriptTag ###");
+    console.log("baseURL: ", baseURL);
+  }
   const noscriptTag: Element = document.createElement("noscript");
-  noscriptTag.appendChild(generateImageTag(baseURL));
-  return noscriptTag;
+  try {
+    noscriptTag.appendChild(generateImageTag(baseURL, debug));
+    if (debug) {
+      console.log("noscriptTag: ", noscriptTag);
+    }
+    return noscriptTag;
+  } catch (error) {
+    if (debug) {
+      console.log(error);
+      console.log(
+        "ERROR: Error appending device fingerprinter pixel (domManipulation.ts - getNoscriptTag)"
+      );
+    }
+    return noscriptTag;
+  }
 };
 
-const generateImageTag = (baseURL: string) => {
+const generateImageTag = (baseURL: string, debug?: boolean) => {
+  if (debug) {
+    console.log("### CALLING: generateImageTag ###");
+    console.log("baseURL: ", baseURL);
+  }
   const imageTag: Element = document.createElement("img");
-  const srcImage = `${baseURL}/pixel.png`;
-  imageTag.setAttribute("src", srcImage);
-  return imageTag;
+  try {
+    const srcImage = `${baseURL}/pixel.png`;
+    if (debug) {
+      console.log("srcImage: ", srcImage);
+    }
+    imageTag.setAttribute("src", srcImage);
+    if (debug) {
+      console.log("imageTag: ", imageTag);
+    }
+    return imageTag;
+  } catch (error) {
+    if (debug) {
+      console.log(error);
+      console.log(
+        "ERROR: Error appending device fingerprinter pixel (domManipulation.ts - generateImageTag)"
+      );
+    }
+    return imageTag;
+  }
 };
 
 // DOM functions
 
-const getScriptTagWindowIPQInit = () => {
+const getScriptTagWindowIPQInit = (debug?: boolean) => {
+  if (debug) {
+    console.log("### CALLING: generateImageTag ###");
+  }
   const scriptTag: HTMLScriptElement = document.createElement("script");
-  scriptTag.setAttribute("type", "text/javascript");
-  const inlineScript = document.createTextNode(`
+  try {
+    scriptTag.setAttribute("type", "text/javascript");
+    const inlineScript = document.createTextNode(`
         window.IPQ = {
             Callback: function(){}
         };
     `);
-  scriptTag.appendChild(inlineScript);
-  return scriptTag;
+    scriptTag.appendChild(inlineScript);
+    if (debug) {
+      console.log("scriptTag: ", scriptTag);
+    }
+    return scriptTag;
+  } catch (error) {
+    if (debug) {
+      console.log(error);
+      console.log(
+        "ERROR: Error appending script tag (domManipulation.ts - getScriptTagWindowIPQInit)"
+      );
+    }
+    return scriptTag;
+  }
 };
 
 export default addDeviceTrackingTags;
