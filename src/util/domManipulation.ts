@@ -3,7 +3,9 @@ import {
   DEVICE_FINGERPRINT_SCRIPT_ID_ASYNC,
 } from "./const";
 
-// Sync methods
+//#######################
+// Exports
+//#######################
 
 export const addDeviceTrackingTags = (secretKey: string) => {
   const baseURL = `https://www.ipqscdn.com/api/*/${secretKey}`;
@@ -11,8 +13,6 @@ export const addDeviceTrackingTags = (secretKey: string) => {
   document.head.appendChild(getScriptTagLoadSrc(baseURL));
   document.head.appendChild(getNoscriptTag(baseURL));
 };
-
-// Sync methods with custom configs
 
 export const addDeviceTrackingTagsCustom = (
   secretKey: string,
@@ -25,7 +25,53 @@ export const addDeviceTrackingTagsCustom = (
   document.head.appendChild(getNoscriptTag(baseURL));
 };
 
-// Common sync methods
+export const addDeviceTrackingTagsAsync = (secretKey: string) => {
+  return new Promise<void>((resolve, reject) => {
+    try {
+      const baseURL = `https://www.ipqscdn.com/api/*/${secretKey}`;
+      const learnJsScriptTag = getScriptTagLoadSrc(baseURL);
+      const initScriptTag = getScriptTagWindowIPQInit();
+      const noScriptTag = getNoscriptTag(baseURL);
+      document.head.appendChild(initScriptTag);
+      document.head.appendChild(learnJsScriptTag);
+      document.head.appendChild(noScriptTag);
+      learnJsScriptTag.addEventListener("load", () => {
+        resolve();
+      });
+    } catch (error) {
+      console.log(error);
+      reject();
+    }
+  });
+};
+
+export const addDeviceTrackingTagsAsyncCustom = (
+  secretKey: string,
+  customDomain: string,
+  trackerName: string
+) => {
+  return new Promise<void>((resolve, reject) => {
+    try {
+      const baseURL = `https://${customDomain}/api/${trackerName}/${secretKey}`;
+      const learnJsScriptTag = getScriptTagLoadSrc(baseURL);
+      const initScriptTag = getScriptTagWindowIPQInit();
+      const noScriptTag = getNoscriptTag(baseURL);
+      document.head.appendChild(initScriptTag);
+      document.head.appendChild(learnJsScriptTag);
+      document.head.appendChild(noScriptTag);
+      learnJsScriptTag.addEventListener("load", () => {
+        resolve();
+      });
+    } catch (error) {
+      console.log(error);
+      reject();
+    }
+  });
+};
+
+//#######################
+// Common functions
+//#######################
 
 const getScriptTagLoadSrc = (baseURL: string) => {
   const srcFile = `${baseURL}/learn.js`;
@@ -36,59 +82,18 @@ const getScriptTagLoadSrc = (baseURL: string) => {
   return scriptTag;
 };
 
-// Async methods
-
-export const addDeviceTrackingTagsAsync = (secretKey: string) => {
-  return new Promise<void>((resolve, reject) => {
-    const baseURL = `https://www.ipqscdn.com/api/*/${secretKey}`;
-    document.head.appendChild(getScriptTagWindowIPQInit());
-    document.head.appendChild(
-      getScriptTagLoadSrcAsync(baseURL, resolve, reject)
-    );
-    document.head.appendChild(getNoscriptTag(baseURL));
-  });
-};
-
-// Async methods with custom domain, tracker
-
-export const addDeviceTrackingTagsAsyncCustom = (
-  secretKey: string,
-  customDomain: string,
-  trackerName: string
-) => {
-  return new Promise<void>((resolve, reject) => {
-    const baseURL = `https://${customDomain}/api/${trackerName}/${secretKey}`;
-    document.head.appendChild(getScriptTagWindowIPQInit());
-    document.head.appendChild(
-      getScriptTagLoadSrcAsync(baseURL, resolve, reject)
-    );
-    document.head.appendChild(getNoscriptTag(baseURL));
-  });
-};
-
-// Common async methods
-
-const getScriptTagLoadSrcAsync = (
-  baseURL: string,
-  resolveCb: () => void,
-  rejectCb: () => void
-) => {
-  const srcFile = `${baseURL}/learn.js`;
+const getScriptTagWindowIPQInit = () => {
   const scriptTag: HTMLScriptElement = document.createElement("script");
-  scriptTag.setAttribute("src", srcFile);
-  scriptTag.setAttribute("id", DEVICE_FINGERPRINT_SCRIPT_ID_ASYNC);
-  scriptTag.setAttribute("crossorigin", "anonymous");
-  // For async
-  scriptTag.onload = function () {
-    resolveCb();
-  };
-  scriptTag.onerror = function () {
-    rejectCb();
-  };
+  scriptTag.setAttribute("id", "test");
+  scriptTag.setAttribute("type", "text/javascript");
+  const inlineScript = document.createTextNode(`
+        window.IPQ = {
+            Callback: function(){}
+        };
+    `);
+  scriptTag.appendChild(inlineScript);
   return scriptTag;
 };
-
-// Pixel fallback
 
 const getNoscriptTag = (baseURL: string) => {
   const noscriptTag: Element = document.createElement("noscript");
@@ -101,20 +106,6 @@ const generateImageTag = (baseURL: string) => {
   const srcImage = `${baseURL}/pixel.png`;
   imageTag.setAttribute("src", srcImage);
   return imageTag;
-};
-
-// DOM functions
-
-const getScriptTagWindowIPQInit = () => {
-  const scriptTag: HTMLScriptElement = document.createElement("script");
-  scriptTag.setAttribute("type", "text/javascript");
-  const inlineScript = document.createTextNode(`
-        window.IPQ = {
-            Callback: function(){}
-        };
-    `);
-  scriptTag.appendChild(inlineScript);
-  return scriptTag;
 };
 
 export default addDeviceTrackingTags;
