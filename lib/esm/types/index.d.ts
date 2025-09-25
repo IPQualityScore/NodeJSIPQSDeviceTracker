@@ -15,6 +15,13 @@ declare const _default: {
     SetRequestTimeout: (timeout: number) => void;
     SetDebugLevel: (debug: number) => void;
     FetchExecutionLogs: () => object;
+    options: {
+        pixelEnabled: boolean;
+        enablePixel: () => void;
+        getOptions: () => {
+            pixelEnabled: boolean;
+        };
+    };
 };
 export default _default;
 //# sourceMappingURL=index.d.ts.map

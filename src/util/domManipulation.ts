@@ -1,17 +1,30 @@
-import {
-  DEVICE_FINGERPRINT_SCRIPT_ID,
-  DEVICE_FINGERPRINT_SCRIPT_ID_ASYNC,
-} from "./const";
+import { DEVICE_FINGERPRINT_SCRIPT_ID } from "./const";
 
 //#######################
 // Exports
 //#######################
 
+export const options = {
+  //** Configs */
+  pixelEnabled: false,
+
+  //** Setters/getters */
+  enablePixel: () => {
+    options.pixelEnabled = true;
+  },
+
+  disablePixel: () => {
+    options.pixelEnabled = true;
+  },
+
+  getOptions: () => {
+    return { pixelEnabled: options.pixelEnabled };
+  },
+};
+
 export const addDeviceTrackingTags = (secretKey: string) => {
   const baseURL = `https://www.ipqscdn.com/api/*/${secretKey}`;
-  document.head.appendChild(getScriptTagWindowIPQInit());
-  document.head.appendChild(getScriptTagLoadSrc(baseURL));
-  document.head.appendChild(getNoscriptTag(baseURL));
+  syncTagHandler(baseURL);
 };
 
 export const addDeviceTrackingTagsCustom = (
@@ -20,58 +33,57 @@ export const addDeviceTrackingTagsCustom = (
   trackerName: string
 ) => {
   const baseURL = `https://${customDomain}/api/${trackerName}/${secretKey}`;
-  document.head.appendChild(getScriptTagWindowIPQInit());
-  document.head.appendChild(getScriptTagLoadSrc(baseURL));
-  document.head.appendChild(getNoscriptTag(baseURL));
+  syncTagHandler(baseURL);
 };
 
-export const addDeviceTrackingTagsAsync = (secretKey: string) => {
-  return new Promise<void>((resolve, reject) => {
-    try {
-      const baseURL = `https://www.ipqscdn.com/api/*/${secretKey}`;
-      const learnJsScriptTag = getScriptTagLoadSrc(baseURL);
-      const initScriptTag = getScriptTagWindowIPQInit();
-      const noScriptTag = getNoscriptTag(baseURL);
-      document.head.appendChild(initScriptTag);
-      document.head.appendChild(learnJsScriptTag);
-      document.head.appendChild(noScriptTag);
-      learnJsScriptTag.addEventListener("load", () => {
-        resolve();
-      });
-    } catch (error) {
-      console.log(error);
-      reject();
-    }
-  });
+export const addDeviceTrackingTagsAsync = async (secretKey: string) => {
+  const baseURL = `https://www.ipqscdn.com/api/*/${secretKey}`;
+  return await asyncTagHandler(baseURL);
 };
 
-export const addDeviceTrackingTagsAsyncCustom = (
+export const addDeviceTrackingTagsAsyncCustom = async (
   secretKey: string,
   customDomain: string,
   trackerName: string
 ) => {
-  return new Promise<void>((resolve, reject) => {
-    try {
-      const baseURL = `https://${customDomain}/api/${trackerName}/${secretKey}`;
-      const learnJsScriptTag = getScriptTagLoadSrc(baseURL);
-      const initScriptTag = getScriptTagWindowIPQInit();
-      const noScriptTag = getNoscriptTag(baseURL);
-      document.head.appendChild(initScriptTag);
-      document.head.appendChild(learnJsScriptTag);
-      document.head.appendChild(noScriptTag);
-      learnJsScriptTag.addEventListener("load", () => {
-        resolve();
-      });
-    } catch (error) {
-      console.log(error);
-      reject();
-    }
-  });
+  const baseURL = `https://${customDomain}/api/${trackerName}/${secretKey}`;
+  return await asyncTagHandler(baseURL);
 };
 
 //#######################
 // Common functions
 //#######################
+
+function syncTagHandler(baseURL: string) {
+  document.head.appendChild(getScriptTagWindowIPQInit());
+  document.head.appendChild(getScriptTagLoadSrc(baseURL));
+  noscriptHandler(baseURL);
+}
+
+async function asyncTagHandler(baseURL: string) {
+  return new Promise<void>((resolve, reject) => {
+    try {
+      document.head.appendChild(getScriptTagWindowIPQInit());
+      const learnJsScriptTag = getScriptTagLoadSrc(baseURL);
+      document.head.appendChild(learnJsScriptTag);
+      learnJsScriptTag.addEventListener("load", () => {
+        resolve();
+      });
+
+      noscriptHandler(baseURL);
+    } catch (error) {
+      console.log(error);
+      reject();
+    }
+  });
+}
+
+function noscriptHandler(baseURL: string) {
+  if (options.pixelEnabled) {
+    const noScriptTag = getNoscriptTag(baseURL);
+    document.head.appendChild(noScriptTag);
+  }
+}
 
 const getScriptTagLoadSrc = (baseURL: string) => {
   const srcFile = `${baseURL}/learn.js`;

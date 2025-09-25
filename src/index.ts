@@ -18,9 +18,12 @@ import {
   addDeviceTrackingTagsAsync,
   addDeviceTrackingTagsCustom,
   addDeviceTrackingTagsAsyncCustom,
+  options,
 } from "./util/domManipulation";
 
-// Sync options
+//#######################
+// Sync Functions
+//#######################
 
 const initializeScript = (secretKey: string) => {
   addDeviceTrackingTags(secretKey);
@@ -34,18 +37,20 @@ const initializeScriptCustom = (
   addDeviceTrackingTagsCustom(secretKey, customDomain, trackerName);
 };
 
-//Async options
+//#######################
+// Async Functions
+//#######################
 
-const initializeScriptAsync = (secretKey: string) => {
-  return addDeviceTrackingTagsAsync(secretKey);
+const initializeScriptAsync = async (secretKey: string) => {
+  await addDeviceTrackingTagsAsync(secretKey);
 };
 
-const initializeScriptAsyncCustom = (
+const initializeScriptAsyncCustom = async (
   secretKey: string,
   customDomain: string,
   trackerName: string
 ) => {
-  return addDeviceTrackingTagsAsyncCustom(secretKey, customDomain, trackerName);
+  await addDeviceTrackingTagsAsyncCustom(secretKey, customDomain, trackerName);
 };
 
 export default {
@@ -65,4 +70,5 @@ export default {
   SetRequestTimeout,
   SetDebugLevel,
   FetchExecutionLogs,
+  options,
 };
