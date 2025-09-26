@@ -1,3 +1,10 @@
+export declare const options: {
+    pixelEnabled: boolean;
+    enablePixel: () => void;
+    getOptions: () => {
+        pixelEnabled: boolean;
+    };
+};
 export declare const addDeviceTrackingTags: (secretKey: string) => void;
 export declare const addDeviceTrackingTagsCustom: (secretKey: string, customDomain: string, trackerName: string) => void;
 export declare const addDeviceTrackingTagsAsync: (secretKey: string) => Promise<void>;
