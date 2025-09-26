@@ -1,6 +1,7 @@
 export declare const options: {
     pixelEnabled: boolean;
     enablePixel: () => void;
+    disablePixel: () => void;
     getOptions: () => {
         pixelEnabled: boolean;
     };
